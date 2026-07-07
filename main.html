@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Offline Store | تسوق أونلاين</title>
+<title>Offline Store | متجر اوفلاين</title>
 <meta name="description" content="Offline Store - منتجات مختارة بعناية، تواصل واطلب على واتساب.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -357,7 +357,7 @@
         مصر، القليوبية، شبرا الخيمة
       </div>
     </div>
-    <a href="https://wa.me/201111111111" class="wa-btn" target="_blank" rel="noopener">
+    <a href="https://wa.me/201226700095" class="wa-btn" target="_blank" rel="noopener">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.44 5.15L2 22l5.1-1.55a9.86 9.86 0 0 0 4.94 1.32h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.64-1.03-5.13-2.9-7-1.87-1.87-4.36-2.9-7-2.9zm5.79 14.05c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.13.11-1.82-.11a16.4 16.4 0 0 1-1.63-.6c-2.87-1.24-4.75-4.12-4.89-4.31-.14-.19-1.17-1.55-1.17-2.96 0-1.4.74-2.09 1-2.38.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.58.82 2 .89 2.14.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.42.49-.14.13-.28.28-.12.55.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.82.86.27.14.45.2.51.32.07.11.07.66-.17 1.34z"/></svg>
       تواصل<span> واطلب</span>
     </a>
@@ -365,9 +365,9 @@
 </header>
 
 <div class="intro">
-  <span class="eyebrow">مجموعة مختارة</span>
-  <h1>قطع بسيطة، جودة تستاهل.</h1>
-  <p>اختار المنتج، شوف تفاصيله، واطلبه على واتساب في دقيقة واحدة.</p>
+  <span class="eyebrow">الكمية محدودة</span>
+  <h1>لبس يليق بيك، وسعر يريحك.</h1>
+  <p>قطع مختارة بعناية وجودة تستاهل تتلبس، وبتنفد بسرعة. اطلب دلوقتي على واتساب قبل ما الكمية تخلص.</p>
 </div>
 
 <main class="container" id="grid"></main>
@@ -387,19 +387,20 @@
 </div>
 
 <script>
-  const COL = { ID:0, SIZES:1, PRICE:2, IMAGES:3, PIECES:4 };
+  const COL = { LABEL:0, ID:1, SIZES:2, PRICE:3, IMAGES:4, PIECES:5 };
 
   const PRODUCTS = [
     [
+      "بنطلون رجالي كلاسيك",
       1,
-      ["S", "M", "L"],
+      ["S", "M", "L", "XL", "2XL"],
       150,
       ["Images/1-1.jpeg", "Images/1-2.jpeg"],
       1
     ]
   ];
 
-  const WHATSAPP_NUMBER = "201111111111";
+  const WHATSAPP_NUMBER = "201226700095";
 
   const grid = document.getElementById("grid");
   const overlay = document.getElementById("overlay");
@@ -413,10 +414,10 @@
     grid.innerHTML = PRODUCTS.map(p => `
       <article class="product-card">
         <div class="product-media">
-          <img src="${p[COL.IMAGES][0]}" alt="منتج ${p[COL.ID]}" loading="lazy">
+          <img src="${p[COL.IMAGES][0]}" alt="${p[COL.LABEL]}" loading="lazy">
         </div>
         <div class="product-body">
-          <div class="product-title">منتج ${p[COL.ID]}</div>
+          <div class="product-title">${p[COL.LABEL]}</div>
           <div class="product-price">${p[COL.PRICE]} <small>جنيه</small></div>
           <button class="detail-btn" data-id="${p[COL.ID]}">عرض التفاصيل</button>
         </div>
@@ -432,7 +433,7 @@
     const p = PRODUCTS.find(row => row[COL.ID] === id);
     if(!p) return;
 
-    const title = `منتج ${p[COL.ID]}`;
+    const title = p[COL.LABEL];
     const sizes = p[COL.SIZES];
     const price = p[COL.PRICE];
     const images = p[COL.IMAGES];
