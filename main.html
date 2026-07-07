@@ -1,59 +1,535 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>offline | متجر</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background: #000; color: #fff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Offline Store | تسوق أونلاين</title>
+<meta name="description" content="Offline Store - منتجات مختارة بعناية، تواصل واطلب على واتساب.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#181511;
+    --ink-soft:#332d24;
+    --paper:#faf7f1;
+    --card:#ffffff;
+    --line:#e9e3d6;
+    --gold:#b6902f;
+    --gold-deep:#8a6a1f;
+    --wine:#6e2b2b;
+    --muted:#8c8375;
+    --radius-lg:22px;
+    --radius-sm:14px;
+    --shadow: 0 12px 30px -14px rgba(24,21,17,.28);
+  }
 
-        header { width: 100%; max-width: 500px; padding: 20px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 22px; font-weight: bold; letter-spacing: 1px; }
-        .whatsapp { border: 1px solid #25d366; color: #25d366; padding: 6px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex; flex-direction:column;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ display:block; max-width:100%; }
+  button{ font-family:inherit; }
 
-        .container { width: 100%; max-width: 400px; padding: 20px; }
-        .product { background: #111; border-radius: 15px; padding: 15px; text-align: center; }
-        .product img { width: 100%; max-height: 300px; object-fit: contain; background: #000; border-radius: 10px; }
-        
-        .info { margin-top: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .btn { background: #fff; color: #000; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-    </style>
+  header{
+    position:sticky; top:0; z-index:40;
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .header-inner{
+    max-width:560px; margin:0 auto;
+    padding:14px 18px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .name{
+    direction:ltr;
+    unicode-bidi:isolate;
+    font-family:'Tajawal',sans-serif;
+    font-weight:900;
+    font-size:20px;
+    letter-spacing:.3px;
+    color:var(--paper);
+    display:inline-flex; align-items:baseline; gap:5px;
+  }
+  .brand .name .word-gold{ color:var(--gold); }
+  .brand .loc{
+    font-size:11px;
+    color:#c8c1b3;
+    display:flex; align-items:center; gap:5px;
+  }
+  .brand .loc svg{ flex-shrink:0; }
+
+  .wa-btn{
+    display:flex; align-items:center; gap:6px;
+    background:#25d366; color:#08300f;
+    padding:8px 14px; border-radius:30px;
+    text-decoration:none; font-weight:700; font-size:12.5px;
+    box-shadow:0 6px 16px -6px rgba(37,211,102,.55);
+    transition:transform .15s ease, box-shadow .15s ease;
+    white-space:nowrap;
+  }
+  .wa-btn:active{ transform:scale(.96); }
+  .wa-btn span{ display:none; }
+
+  @media(min-width:768px){
+    .header-inner{
+      max-width:1100px;
+      padding:18px 32px;
+    }
+    .brand .name{ font-size:24px; }
+    .brand .loc{ font-size:12.5px; }
+    .wa-btn{
+      padding:11px 22px; font-size:14px; gap:8px;
+    }
+    .wa-btn span{ display:inline; }
+  }
+
+  .intro{
+    max-width:560px; margin:0 auto;
+    padding:22px 20px 4px;
+  }
+  .intro .eyebrow{
+    font-size:11.5px; letter-spacing:1.5px; color:var(--gold-deep);
+    font-weight:700; text-transform:uppercase;
+    display:inline-block; margin-bottom:6px;
+  }
+  .intro h1{
+    font-family:'Tajawal',sans-serif;
+    font-weight:900; font-size:21px; line-height:1.5;
+    color:var(--ink);
+  }
+  .intro p{
+    margin-top:6px; font-size:13.5px; color:var(--muted); line-height:1.7;
+  }
+  @media(min-width:768px){
+    .intro{ max-width:1100px; padding:34px 32px 6px; }
+    .intro h1{ font-size:30px; }
+    .intro p{ font-size:15px; max-width:520px; }
+  }
+
+  .container{
+    max-width:560px; margin:0 auto;
+    padding:18px 16px 60px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+    flex:1 0 auto;
+    width:100%;
+  }
+  @media(min-width:480px){
+    .container{ grid-template-columns:1fr 1fr; }
+  }
+  @media(min-width:768px){
+    .container{
+      max-width:1100px;
+      grid-template-columns:repeat(3, 1fr);
+      gap:24px;
+      padding:24px 32px 80px;
+    }
+  }
+  @media(min-width:1080px){
+    .container{ grid-template-columns:repeat(4, 1fr); }
+  }
+
+  .product-card{
+    background:var(--card);
+    border-radius:var(--radius-lg);
+    border:1px solid var(--line);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    display:flex; flex-direction:column;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .product-card:hover{ transform:translateY(-3px); }
+
+  .product-media{
+    position:relative;
+    aspect-ratio:1/1;
+    background:#f1ede3;
+    overflow:hidden;
+  }
+  .product-media img{
+    width:100%; height:100%; object-fit:cover;
+  }
+  .product-badge{
+    position:absolute; top:10px; inset-inline-start:10px;
+    background:var(--ink); color:var(--paper);
+    font-size:10.5px; font-weight:700;
+    padding:5px 10px; border-radius:20px;
+    letter-spacing:.3px;
+  }
+
+  .product-body{
+    padding:14px 16px 16px;
+    display:flex; flex-direction:column; gap:10px; flex:1;
+  }
+  .product-title{ font-weight:700; font-size:15px; color:var(--ink); }
+  .product-price{
+    font-family:'Tajawal',sans-serif;
+    font-weight:900; font-size:18px; color:var(--gold-deep);
+  }
+  .product-price small{
+    font-size:11px; font-weight:500; color:var(--muted); margin-inline-start:3px;
+  }
+
+  .detail-btn{
+    margin-top:auto;
+    background:var(--ink); color:var(--paper);
+    border:none; padding:11px 14px; border-radius:30px;
+    font-weight:700; font-size:13.5px; cursor:pointer;
+    transition:background .2s ease, transform .15s ease;
+  }
+  .detail-btn:hover{ background:var(--ink-soft); }
+  .detail-btn:active{ transform:scale(.97); }
+
+  .sheet-overlay{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(24,21,17,.55);
+    backdrop-filter:blur(2px);
+    opacity:0; pointer-events:none;
+    transition:opacity .25s ease;
+  }
+  .sheet-overlay.open{ opacity:1; pointer-events:auto; }
+
+  .sheet{
+    position:fixed; z-index:101;
+    left:50%; bottom:0;
+    transform:translate(-50%, 100%);
+    width:100%; max-width:560px;
+    max-height:90vh;
+    background:var(--paper);
+    border-radius:26px 26px 0 0;
+    box-shadow:0 -20px 45px -10px rgba(24,21,17,.35);
+    transition:transform .32s cubic-bezier(.22,.68,0,1.15), opacity .25s ease, visibility 0s linear .32s;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .sheet.open{
+    transform:translate(-50%, 0);
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transition:transform .32s cubic-bezier(.22,.68,0,1.15), opacity .25s ease, visibility 0s linear 0s;
+  }
+
+  @media(min-width:768px){
+    .sheet{
+      top:50%; bottom:auto;
+      transform:translate(-50%, -50%) scale(.94);
+      max-width:640px;
+      border-radius:26px;
+      max-height:85vh;
+    }
+    .sheet.open{
+      transform:translate(-50%, -50%) scale(1);
+    }
+  }
+
+  .sheet-handle{
+    display:flex; justify-content:center; padding:10px 0 4px;
+    position:sticky; top:0; background:var(--paper); z-index:2;
+  }
+  .sheet-handle span{
+    width:38px; height:4px; border-radius:4px; background:var(--line);
+  }
+
+  .sheet-close{
+    position:sticky; top:10px; margin-inline-start:16px;
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--card); border:1px solid var(--line);
+    padding:8px 14px; border-radius:20px;
+    font-size:12.5px; font-weight:700; color:var(--ink-soft);
+    cursor:pointer; z-index:3;
+  }
+
+  .sheet-content{ padding:6px 20px 30px; }
+  .sheet-gallery-wrap{ position:relative; }
+  .sheet-gallery{
+    display:flex; gap:10px; overflow-x:auto; padding-bottom:4px;
+    scroll-snap-type:x mandatory;
+    touch-action:pan-x;
+    scrollbar-width:none;
+  }
+  .sheet-gallery::-webkit-scrollbar{ display:none; }
+  .sheet-gallery img{
+    scroll-snap-align:start;
+    flex:0 0 100%;
+    border-radius:var(--radius-sm);
+    aspect-ratio:1/1; object-fit:cover;
+    background:#f1ede3;
+  }
+  .gallery-nav{
+    display:none;
+    position:absolute; top:50%; translate:0 -50%;
+    width:36px; height:36px; border-radius:50%;
+    background:var(--card); border:1px solid var(--line);
+    align-items:center; justify-content:center;
+    cursor:pointer; box-shadow:var(--shadow);
+    color:var(--ink); z-index:2;
+  }
+  .gallery-nav.prev{ inset-inline-start:8px; }
+  .gallery-nav.next{ inset-inline-end:8px; }
+  @media (hover:hover) and (pointer:fine){
+    .gallery-nav{ display:flex; }
+  }
+
+  .sheet-dots{ display:flex; justify-content:center; gap:6px; margin-top:8px; }
+  .sheet-dots span{ width:6px; height:6px; border-radius:50%; background:var(--line); }
+  .sheet-dots span.active{ background:var(--gold); }
+
+  .sheet-title{
+    font-family:'Tajawal',sans-serif; font-weight:900; font-size:20px;
+    margin-top:16px;
+  }
+  .sheet-price{
+    font-family:'Tajawal',sans-serif; font-weight:900; font-size:24px;
+    color:var(--gold-deep); margin-top:6px;
+  }
+  .sheet-meta{
+    display:flex; gap:18px; margin-top:14px; flex-wrap:wrap;
+  }
+  .sheet-meta .item{
+    font-size:12.5px; color:var(--muted);
+    display:flex; align-items:center; gap:6px;
+  }
+  .sheet-meta .item b{ color:var(--ink); font-weight:700; }
+
+  .sizes-block{ margin-top:18px; }
+  .sizes-label{
+    font-size:12px; font-weight:700; color:var(--muted); margin-bottom:8px;
+  }
+  .sizes-list{ display:flex; gap:8px; flex-wrap:wrap; }
+  .size-chip{
+    min-width:44px; padding:9px 14px;
+    border-radius:12px; border:1.5px solid var(--line);
+    background:var(--card); color:var(--ink);
+    font-weight:700; font-size:13.5px; cursor:pointer;
+    transition:all .15s ease;
+  }
+  .size-chip:hover{ border-color:var(--gold); }
+  .size-chip.active{
+    background:var(--ink); border-color:var(--ink); color:var(--paper);
+  }
+
+  .sheet-cta{
+    margin-top:22px;
+  }
+  .sheet-cta a{
+    display:block;
+    text-align:center;
+    padding:15px; border-radius:30px; font-weight:700; font-size:15px;
+    text-decoration:none;
+  }
+  .sheet-cta .order{
+    background:#25d366; color:#08300f;
+  }
+
+  footer{
+    text-align:center; padding:26px 20px 40px;
+    color:var(--muted); font-size:11.5px;
+    flex-shrink:0; width:100%;
+  }
+  footer b{ color:var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; }
+  }
+</style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">offline</div>
-        <a href="https://wa.me/201111111111" class="whatsapp">واتساب</a>
-    </header>
-
-    <div class="container">
-        <div class="product">
-            <img src="Images/1-1.jpeg" alt="product">
-            <div class="info">
-                <span>منتج 1</span>
-                <button class="btn" onclick="showDetails()">التفاصيل</button>
-            </div>
-        </div>
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="name">Offline <span class="word-gold">Store</span></div>
+      <div class="loc">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11a7 7 0 1 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        مصر، القليوبية، شبرا الخيمة
+      </div>
     </div>
+    <a href="https://wa.me/201111111111" class="wa-btn" target="_blank" rel="noopener">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.44 5.15L2 22l5.1-1.55a9.86 9.86 0 0 0 4.94 1.32h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.64-1.03-5.13-2.9-7-1.87-1.87-4.36-2.9-7-2.9zm5.79 14.05c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.13.11-1.82-.11a16.4 16.4 0 0 1-1.63-.6c-2.87-1.24-4.75-4.12-4.89-4.31-.14-.19-1.17-1.55-1.17-2.96 0-1.4.74-2.09 1-2.38.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.58.82 2 .89 2.14.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.42.49-.14.13-.28.28-.12.55.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.82.86.27.14.45.2.51.32.07.11.07.66-.17 1.34z"/></svg>
+      تواصل<span> واطلب</span>
+    </a>
+  </div>
+</header>
 
-    <script>
-        function showDetails() {
-            document.write(`
-                <body style="background:#000; color:#fff; display:flex; flex-direction:column; align-items:center; padding:20px; font-family:sans-serif;">
-                    <div style="width:100%; max-width:400px;">
-                        <button onclick="location.reload()" style="background:none; border:1px solid #fff; color:#fff; padding:8px 15px; border-radius:5px; cursor:pointer;">رجوع</button>
-                        <div style="margin-top:20px; background:#111; padding:15px; border-radius:15px;">
-                            <img src="Images/1-1.jpeg" style="width:100%; height:auto; object-fit:contain; border-radius:10px;">
-                            <h2 style="margin:15px 0;">منتج 1</h2>
-                            <p style="color:#d4af37; font-size:18px;">السعر: 150 جنيه</p>
-                            <p style="margin:10px 0;">القطع: 1</p>
-                            <img src="Images/1-2.jpeg" style="width:100%; height:auto; border-radius:10px; margin-top:10px;">
-                        </div>
-                    </div>
-                </body>
-            `);
-        }
-    </script>
+<div class="intro">
+  <span class="eyebrow">مجموعة مختارة</span>
+  <h1>قطع بسيطة، جودة تستاهل.</h1>
+  <p>اختار المنتج، شوف تفاصيله، واطلبه على واتساب في دقيقة واحدة.</p>
+</div>
+
+<main class="container" id="grid"></main>
+
+<footer>
+  جميع الحقوق محفوظة &copy; <b>Offline Store</b> — <span id="year"></span>
+</footer>
+
+<div class="sheet-overlay" id="overlay"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"><span></span></div>
+  <button class="sheet-close" id="sheetClose">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    إغلاق
+  </button>
+  <div class="sheet-content" id="sheetContent"></div>
+</div>
+
+<script>
+  const COL = { ID:0, SIZES:1, PRICE:2, IMAGES:3, PIECES:4 };
+
+  const PRODUCTS = [
+    [
+      1,
+      ["S", "M", "L"],
+      150,
+      ["Images/1-1.jpeg", "Images/1-2.jpeg"],
+      1
+    ]
+  ];
+
+  const WHATSAPP_NUMBER = "201111111111";
+
+  const grid = document.getElementById("grid");
+  const overlay = document.getElementById("overlay");
+  const sheet = document.getElementById("sheet");
+  const sheetContent = document.getElementById("sheetContent");
+  const sheetClose = document.getElementById("sheetClose");
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  function renderGrid(){
+    grid.innerHTML = PRODUCTS.map(p => `
+      <article class="product-card">
+        <div class="product-media">
+          <img src="${p[COL.IMAGES][0]}" alt="منتج ${p[COL.ID]}" loading="lazy">
+        </div>
+        <div class="product-body">
+          <div class="product-title">منتج ${p[COL.ID]}</div>
+          <div class="product-price">${p[COL.PRICE]} <small>جنيه</small></div>
+          <button class="detail-btn" data-id="${p[COL.ID]}">عرض التفاصيل</button>
+        </div>
+      </article>
+    `).join("");
+
+    grid.querySelectorAll(".detail-btn").forEach(btn => {
+      btn.addEventListener("click", () => openSheet(Number(btn.dataset.id)));
+    });
+  }
+
+  let selectedSize = null;
+
+  function openSheet(id){
+    const p = PRODUCTS.find(row => row[COL.ID] === id);
+    if(!p) return;
+
+    const title = `منتج ${p[COL.ID]}`;
+    const sizes = p[COL.SIZES];
+    const price = p[COL.PRICE];
+    const images = p[COL.IMAGES];
+    const pieces = p[COL.PIECES];
+
+    selectedSize = sizes[0] || null;
+
+    function buildWaLink(){
+      const sizeText = selectedSize ? `، المقاس: ${selectedSize}` : "";
+      const text = encodeURIComponent(`أهلاً، حابب أطلب: ${title} (${price} جنيه)${sizeText}`);
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+    }
+
+    sheetContent.innerHTML = `
+      <div class="sheet-gallery-wrap">
+        <div class="sheet-gallery" id="gallery">
+          ${images.map(src => `<img src="${src}" alt="${title}">`).join("")}
+        </div>
+        ${images.length > 1 ? `
+          <button class="gallery-nav prev" id="galPrev" aria-label="الصورة السابقة">‹</button>
+          <button class="gallery-nav next" id="galNext" aria-label="الصورة التالية">›</button>
+        ` : ""}
+      </div>
+      ${images.length > 1 ? `<div class="sheet-dots" id="dots">${images.map((_,i)=>`<span class="${i===0?'active':''}"></span>`).join("")}</div>` : ""}
+
+      <h2 class="sheet-title">${title}</h2>
+      <div class="sheet-price">${price} جنيه</div>
+
+      <div class="sheet-meta">
+        <div class="item">القطع: <b>${pieces}</b></div>
+      </div>
+
+      ${sizes && sizes.length ? `
+        <div class="sizes-block">
+          <div class="sizes-label">الأحجام المتوفرة</div>
+          <div class="sizes-list" id="sizesList">
+            ${sizes.map((s,i) => `<button type="button" class="size-chip ${i===0?'active':''}" data-size="${s}">${s}</button>`).join("")}
+          </div>
+        </div>
+      ` : ""}
+
+      <div class="sheet-cta">
+        <a class="order" id="orderLink" href="${buildWaLink()}" target="_blank" rel="noopener">اطلب الآن على واتساب</a>
+      </div>
+    `;
+
+    const gallery = document.getElementById("gallery");
+    const dots = document.getElementById("dots");
+    const prevBtn = document.getElementById("galPrev");
+    const nextBtn = document.getElementById("galNext");
+    const sizesList = document.getElementById("sizesList");
+    const orderLink = document.getElementById("orderLink");
+
+    function updateDots(){
+      const idx = Math.round(gallery.scrollLeft / gallery.clientWidth);
+      if(dots) [...dots.children].forEach((d,i) => d.classList.toggle("active", i===idx));
+    }
+
+    if(gallery && dots){
+      gallery.addEventListener("scroll", updateDots);
+    }
+    if(prevBtn) prevBtn.addEventListener("click", () => {
+      gallery.scrollBy({ left: gallery.clientWidth, behavior:"smooth" });
+    });
+    if(nextBtn) nextBtn.addEventListener("click", () => {
+      gallery.scrollBy({ left: -gallery.clientWidth, behavior:"smooth" });
+    });
+
+    if(sizesList){
+      sizesList.querySelectorAll(".size-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          sizesList.querySelectorAll(".size-chip").forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+          selectedSize = chip.dataset.size;
+          orderLink.href = buildWaLink();
+        });
+      });
+    }
+
+    overlay.classList.add("open");
+    sheet.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeSheet(){
+    overlay.classList.remove("open");
+    sheet.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  overlay.addEventListener("click", closeSheet);
+  sheetClose.addEventListener("click", closeSheet);
+  document.addEventListener("keydown", e => { if(e.key === "Escape") closeSheet(); });
+
+  renderGrid();
+</script>
 </body>
 </html>
