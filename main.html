@@ -3,68 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>offlineStore | متجر اوفلاين</title>
+    <title>offline | متجر</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background-color: #f4f4f4; padding-bottom: 50px; }
-        
-        nav { background: #000; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; }
-        .logo { color: #fff; font-size: 24px; font-weight: bold; text-transform: lowercase; text-shadow: 0 0 5px #fff; order: 2; }
-        .nav-info { display: flex; gap: 15px; align-items: center; order: 1; }
-        .whatsapp-btn { background: transparent; color: #25d366; border: 2px solid #25d366; padding: 8px 15px; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        body { background: #000; color: #fff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
-        .container { padding: 40px 0; max-width: 600px; margin: 0 auto; }
-        .card { background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center; }
+        header { width: 100%; max-width: 500px; padding: 20px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 22px; font-weight: bold; letter-spacing: 1px; }
+        .whatsapp { border: 1px solid #25d366; color: #25d366; padding: 6px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; }
+
+        .container { width: 100%; max-width: 400px; padding: 20px; }
+        .product { background: #111; border-radius: 15px; padding: 15px; text-align: center; }
+        .product img { width: 100%; max-height: 300px; object-fit: contain; background: #000; border-radius: 10px; }
         
-        .card > img { width: 100%; height: auto; border-radius: 10px; cursor: pointer; }
-        
-        .details { display: none; margin-top: 20px; padding: 15px; background: #fdfdfd; border: 1px dashed #ccc; border-radius: 10px; position: relative; }
-        .close-btn { position: absolute; top: 5px; left: 10px; cursor: pointer; font-size: 20px; font-weight: bold; }
-        
-        .details-grid { display: flex; justify-content: space-around; margin: 15px 0; font-weight: bold; }
-        .price-tag { color: #d32f2f; font-size: 1.3em; }
-        
-        .extra-img { width: 100%; height: auto; border-radius: 5px; cursor: zoom-in; margin-top: 10px; }
+        .info { margin-top: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .btn { background: #fff; color: #000; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <nav>
+    <header>
         <div class="logo">offline</div>
-        <div class="nav-info">
-            <span style="color: #fff;">مصر</span>
-            <a href="https://wa.me/201111111111" class="whatsapp-btn">واتساب</a>
-        </div>
-    </nav>
+        <a href="https://wa.me/201111111111" class="whatsapp">واتساب</a>
+    </header>
 
     <div class="container">
-        <div class="card">
-            <h3>منتج 1</h3>
-            <img src="Images/1-1.jpeg" alt="صورة 1" onclick="toggleDetails(1)">
-            
-            <div id="details-1" class="details">
-                <span class="close-btn" onclick="toggleDetails(1)">×</span>
-                <div class="details-grid">
-                    <span class="price-tag">150 جنيه</span>
-                    <span>القطع: 1</span>
-                </div>
-                <img src="Images/1-2.jpeg" class="extra-img" onclick="fullScreen(this)">
+        <div class="product">
+            <img src="Images/1-1.jpeg" alt="product">
+            <div class="info">
+                <span>منتج 1</span>
+                <button class="btn" onclick="showDetails()">التفاصيل</button>
             </div>
         </div>
     </div>
 
     <script>
-        function toggleDetails(id) {
-            var el = document.getElementById('details-' + id);
-            el.style.display = (el.style.display === "block") ? "none" : "block";
-        }
-
-        function fullScreen(imgElement) {
-            if (!document.fullscreenElement) {
-                imgElement.requestFullscreen();
-            } else {
-                document.exitFullscreen();
-            }
+        function showDetails() {
+            document.write(`
+                <body style="background:#000; color:#fff; display:flex; flex-direction:column; align-items:center; padding:20px; font-family:sans-serif;">
+                    <div style="width:100%; max-width:400px;">
+                        <button onclick="location.reload()" style="background:none; border:1px solid #fff; color:#fff; padding:8px 15px; border-radius:5px; cursor:pointer;">رجوع</button>
+                        <div style="margin-top:20px; background:#111; padding:15px; border-radius:15px;">
+                            <img src="Images/1-1.jpeg" style="width:100%; height:auto; object-fit:contain; border-radius:10px;">
+                            <h2 style="margin:15px 0;">منتج 1</h2>
+                            <p style="color:#d4af37; font-size:18px;">السعر: 150 جنيه</p>
+                            <p style="margin:10px 0;">القطع: 1</p>
+                            <img src="Images/1-2.jpeg" style="width:100%; height:auto; border-radius:10px; margin-top:10px;">
+                        </div>
+                    </div>
+                </body>
+            `);
         }
     </script>
 </body>
